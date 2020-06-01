@@ -2,13 +2,14 @@ import PrayerModel, {IPrayerModel} from '../database/PrayerModel';
 import {injectable} from 'inversify';
 import Joi from '@hapi/joi';
 import checkValidationData, {ValidationDataResult} from './helper/checkValidationData';
+import {Moment} from 'moment';
 
 interface PrayerDataSchema {
-  id: string;
+  token: string;
 }
 
 const getPrayerValidationSchema = Joi.object<PrayerDataSchema>({
-  id: Joi.string().required(),
+  token: Joi.string().required(),
 });
 
 @injectable()
@@ -33,8 +34,26 @@ class GetPrayerLocator {
     }
     const {value} = data;
     try {
-      const prayer = await PrayerModel.findById(value.id);
+      const prayer = await PrayerModel.findOne({token: value.token});
       return prayer;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  public async getCurrentWeekPrayersCountOfTime(
+    previousFriday: Moment,
+    nextAfter: Moment,
+    reservePrayingTime: '11:30' | '13:30'
+  ): Promise<number | null> {
+    try {
+      const prayers = await PrayerModel.find({
+        updatedAt: {$gte: previousFriday.toDate(), $lt: nextAfter.toDate()},
+        reservePrayingTime,
+      })
+        .countDocuments()
+        .exec();
+      return prayers;
     } catch (error) {
       return error;
     }

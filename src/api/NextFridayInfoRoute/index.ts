@@ -13,9 +13,69 @@ const container: Container = IOC();
 
 const NextFridayInfoRoute = express.Router();
 
+const GetNextFridayInfoController = async (req: Request, res: Response) => {
+  const settingModel = container.get<GetSettingLocator>(TYPES.GetSetting);
+  const prayerModel = container.get<GetPrayerLocator>(TYPES.GetPrayer);
+
+  const nextFriday = getNextFridayDate();
+  const previousFriday = getNextFridayDate().subtract(1, 'week');
+
+  const firstPrayersGroupCount = await prayerModel.getCurrentWeekPrayersCountOfTime(
+    previousFriday,
+    nextFriday,
+    '11:30'
+  );
+  const secondPrayersGroupCount = await prayerModel.getCurrentWeekPrayersCountOfTime(
+    previousFriday,
+    nextFriday,
+    '13:30'
+  );
+
+  const setting = await settingModel.getSetting();
+  const settingObject = setting?.toObject() as ISetting;
+
+  const data = {
+    settings: {
+      nextFridayData: nextFriday.format('YYYY-MM-DD'),
+      firstPraying: {
+        ...settingObject.firstPraying,
+        personSpaceLeft: settingObject.firstPraying.personSpaceLeft - (firstPrayersGroupCount || 0),
+      },
+      secondPraying: {
+        ...settingObject.secondPraying,
+        personSpaceLeft: settingObject.secondPraying.personSpaceLeft - (secondPrayersGroupCount || 0),
+      },
+    },
+    prayer: {
+      token: `${ulid()}.${ulid()}.${ulid()}`,
+      name: {
+        first: '',
+        last: '',
+      },
+      phoneNumber: '',
+    },
+  };
+  res.send(data);
+};
+
 const PostNextFridayInfoController = async (req: Request, res: Response) => {
   const settingModel = container.get<GetSettingLocator>(TYPES.GetSetting);
   const prayerModel = container.get<GetPrayerLocator>(TYPES.GetPrayer);
+
+  const nextFriday = getNextFridayDate();
+  const previousFriday = getNextFridayDate().subtract(1, 'week');
+
+  const firstPrayersGroupCount = await prayerModel.getCurrentWeekPrayersCountOfTime(
+    previousFriday,
+    nextFriday,
+    '11:30'
+  );
+
+  const secondPrayersGroupCount = await prayerModel.getCurrentWeekPrayersCountOfTime(
+    previousFriday,
+    nextFriday,
+    '13:30'
+  );
 
   const token = `${ulid()}.${ulid()}.${ulid()}`;
   let prayer = {
@@ -30,26 +90,45 @@ const PostNextFridayInfoController = async (req: Request, res: Response) => {
   const setting = await settingModel.getSetting();
   const settingObject = setting?.toObject() as ISetting;
 
-  if (req.body.token) {
-    const validatedBody = prayerModel.validate(req.body);
-    const prayerObject = await prayerModel.getPrayer(validatedBody);
-    if (prayerObject) {
-      prayer = {
-        ...prayerObject?.toObject(),
-      };
-    }
+  const validatedData = prayerModel.validate(req.body);
+  if (validatedData.error) {
+    res.status(422).send({
+      code: 'InvalidReceivedData',
+      error: validatedData.error.message,
+    });
+    return;
+  }
+
+  const prayerObject = await prayerModel.getPrayer(validatedData);
+  if (prayerObject) {
+    prayer = {
+      ...prayerObject?.toObject(),
+    };
+  } else {
+    res.status(422).send({
+      code: 'InvalidTokenOrEntryNotFound',
+      error: 'Invalid token or entry not found!',
+    });
+    return;
   }
 
   const data = {
     settings: {
-      nextFridayData: getNextFridayDate(),
-      firstPraying: settingObject.firstPraying,
-      secondPraying: settingObject.secondPraying,
+      nextFridayData: nextFriday.format('YYYY-MM-DD'),
+      firstPraying: {
+        ...settingObject.firstPraying,
+        personSpaceLeft: settingObject.firstPraying.personSpaceLeft - (firstPrayersGroupCount || 0),
+      },
+      secondPraying: {
+        ...settingObject.secondPraying,
+        personSpaceLeft: settingObject.secondPraying.personSpaceLeft - (secondPrayersGroupCount || 0),
+      },
     },
     prayer,
   };
   res.send(data);
 };
 
+NextFridayInfoRoute.get('/friday-praying', GetNextFridayInfoController);
 NextFridayInfoRoute.post('/friday-praying', PostNextFridayInfoController);
 export default NextFridayInfoRoute;

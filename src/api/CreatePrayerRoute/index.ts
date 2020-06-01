@@ -20,8 +20,14 @@ const CreatePrayerController = async (req: Request, res: Response) => {
     });
   }
 
-  const createdPryer = await createPryerModel.createPrayer(validatedData);
-  res.send(createdPryer?.toObject());
+  const createdPrayer = await createPryerModel.createPrayer(validatedData);
+  if (createdPrayer instanceof Error) {
+    res.status(422).send({
+      code: 'RecordAlreadyExists',
+      message: createdPrayer.message,
+    });
+  }
+  res.send(createdPrayer);
 };
 
 CreatePrayerRoute.post('/create-prayer', CreatePrayerController);

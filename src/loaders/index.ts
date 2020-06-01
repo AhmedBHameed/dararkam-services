@@ -16,6 +16,7 @@ import showIp from '../util/showIp';
 import {xssProtection} from '../util/xssProtection';
 import NextFridayInfoRoute from '../api/NextFridayInfoRoute';
 import CreatePrayerRoute from '../api/CreatePrayerRoute';
+import UpdatePrayerRoute from '../api/UpdatePrayerRoute';
 
 /**
  * Connection ready state
@@ -54,10 +55,11 @@ export default async (): Promise<void> => {
 
   app.use(`${root}/api`, NextFridayInfoRoute);
   app.use(`${root}/api`, CreatePrayerRoute);
+  app.use(`${root}/api`, UpdatePrayerRoute);
 
   app.listen(port, () => {
     console.log(
-      `\n\t####################################################################\n\t🛡️  Authentication server listening on port: http://${showIp()}:${port} 🛡️\n\t####################################################################\n`
+      `\n\t#################################################################################\n\t🛡️  Application server listening on port: http://[${showIp()}]:${port} 🛡️\n\t#################################################################################\n`
     );
   });
 };

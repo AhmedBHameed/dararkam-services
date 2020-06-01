@@ -8,6 +8,7 @@ type CreatePrayerDataSchema = {
   phone: string;
   firstName: string;
   lastName: string;
+  reservePrayingTime: string;
   token: string;
 };
 
@@ -16,6 +17,7 @@ const createPrayerValidationSchema = Joi.object<CreatePrayerDataSchema>({
   phone: Joi.string().required(),
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
+  reservePrayingTime: Joi.string().required(),
   token: Joi.string().required(),
 });
 
@@ -25,18 +27,23 @@ class CreatePrayerLocator {
     return createPrayerValidationSchema.validate(data, {abortEarly: false});
   }
 
-  public async createPrayer(data: ValidationDataResult<CreatePrayerDataSchema>): Promise<IPrayerModel | null> {
+  public async createPrayer(data: ValidationDataResult<CreatePrayerDataSchema>): Promise<IPrayerModel | Error> {
     try {
       const error = checkValidationData(data);
       if (error) {
         throw error;
       }
       const {value} = data;
+      const isExists = await PrayerModel.findOne({token: value.token}).countDocuments().exec();
+      if (isExists) {
+        throw new Error('Record already exists!');
+      }
       const newPrayer = await PrayerModel.create({
         name: {
           last: value.lastName,
           first: value.firstName,
         },
+        reservePrayingTime: value.reservePrayingTime,
         phone: value.phone,
         token: value.token,
       });

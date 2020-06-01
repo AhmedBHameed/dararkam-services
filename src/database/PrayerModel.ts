@@ -9,6 +9,7 @@ export interface IPrayer {
     first?: string;
     last?: string;
   };
+  reservePrayingTime?: string;
   token?: string;
 }
 
@@ -20,6 +21,7 @@ const PrayerSchema = new Schema(
     name: {type: {first: String, last: String}, default: {first: '', last: ''}},
     email: {type: String},
     phone: {type: String, required: true},
+    reservePrayingTime: {type: String, required: true},
     token: {type: String, required: true},
   },
   {timestamps: true}
@@ -34,5 +36,5 @@ PrayerSchema.pre<IPrayerModel>('save', function (this, next) {
   next();
 });
 
-const PrayerModel = model<IPrayerModel>('User', PrayerSchema);
+const PrayerModel = model<IPrayerModel>('Prayer', PrayerSchema);
 export default PrayerModel;
