@@ -1,4 +1,5 @@
-import {Document, Schema, Types, model} from 'mongoose';
+import {Document, model, Schema, Types} from 'mongoose';
+
 import {utcTime} from '../util/time';
 
 export interface IPrayer {

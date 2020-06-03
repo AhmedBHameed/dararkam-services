@@ -1,4 +1,5 @@
 import {Moment, RelativeTimeKey} from 'moment';
+
 // eslint-disable-next-line
 const momentLib = require('moment');
 

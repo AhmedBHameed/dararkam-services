@@ -1,8 +1,10 @@
-import PrayerModel, {IPrayerModel} from '../database/PrayerModel';
 import {injectable} from 'inversify';
-import Joi from '@hapi/joi';
-import checkValidationData, {ValidationDataResult} from './helper/checkValidationData';
 import {Moment} from 'moment';
+
+import Joi from '@hapi/joi';
+
+import PrayerModel, {IPrayerModel} from '../database/PrayerModel';
+import checkValidationData, {ValidationDataResult} from './helper/checkValidationData';
 
 interface PrayerDataSchema {
   token: string;

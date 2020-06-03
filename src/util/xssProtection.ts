@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction, RequestHandler} from 'express'; // as types for typescript only
+import {NextFunction, Request, RequestHandler, Response} from 'express'; // as types for typescript only
 
 // interface XssProtection {
 //   [key: string]: string | number | undefined | null;

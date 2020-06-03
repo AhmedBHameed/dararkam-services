@@ -5,6 +5,7 @@ const TYPES = {
   GetSetting: Symbol.for('GetSetting'),
   UpdatePryer: Symbol.for('UpdatePryer'),
   UpdateSetting: Symbol.for('UpdateSetting'),
+  DeletePrayer: Symbol.for('DeletePrayer'),
   MongoConnectionLocator: Symbol.for('MongoConnectionLocator'),
 };
 

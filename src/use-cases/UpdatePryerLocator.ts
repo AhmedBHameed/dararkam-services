@@ -1,6 +1,8 @@
-import PrayerModel, {IPrayerModel} from '../database/PrayerModel';
-import Joi from '@hapi/joi';
 import {injectable} from 'inversify';
+
+import Joi from '@hapi/joi';
+
+import PrayerModel, {IPrayerModel} from '../database/PrayerModel';
 import checkValidationData, {ValidationDataResult} from './helper/checkValidationData';
 
 interface updatePrayerDataSchema {
@@ -48,6 +50,9 @@ class UpdatePrayerLocator {
         },
         {new: true}
       ).select('-token');
+      if (!updatePrayer) {
+        throw new Error('Invalid token or record not found!');
+      }
       const updatedPryer = await updatePrayer?.save();
       return updatedPryer;
     } catch (error) {

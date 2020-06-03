@@ -1,22 +1,26 @@
 import 'reflect-metadata';
-import express from 'express';
+
 import bodyParser from 'body-parser';
-import {Container} from 'inversify';
-import helmet from 'helmet';
-import environment from '../config/environment';
-import TYPES from '../models/DI/types';
-import IOC from './inversionOfControl';
-import MongoConnectionLocator from '../services/MongoConnectionLocator';
-import {Logger} from '../services/Logger';
+import express from 'express';
 // eslint-disable-next-line
 import mongoSanitize from 'express-mongo-sanitize';
+import helmet from 'helmet';
+import {Container} from 'inversify';
 // eslint-disable-next-line
 import sanitizer from 'sanitizer';
+
+import CreatePrayerRoute from '../api/CreatePrayerRoute';
+import DeletePrayerRoute from '../api/DeletePryerRoute';
+import ListAllPrayersRoute from '../api/ListAllPrayers';
+import NextFridayInfoRoute from '../api/NextFridayInfoRoute';
+import UpdatePrayerRoute from '../api/UpdatePrayerRoute';
+import environment from '../config/environment';
+import TYPES from '../models/DI/types';
+import {Logger} from '../services/Logger';
+import MongoConnectionLocator from '../services/MongoConnectionLocator';
 import showIp from '../util/showIp';
 import {xssProtection} from '../util/xssProtection';
-import NextFridayInfoRoute from '../api/NextFridayInfoRoute';
-import CreatePrayerRoute from '../api/CreatePrayerRoute';
-import UpdatePrayerRoute from '../api/UpdatePrayerRoute';
+import IOC from './inversionOfControl';
 
 /**
  * Connection ready state
@@ -53,9 +57,11 @@ export default async (): Promise<void> => {
   app.use(xssProtection(sanitizer));
   app.use(mongoSanitize());
 
+  app.use(`${root}/api`, ListAllPrayersRoute);
   app.use(`${root}/api`, NextFridayInfoRoute);
   app.use(`${root}/api`, CreatePrayerRoute);
   app.use(`${root}/api`, UpdatePrayerRoute);
+  app.use(`${root}/api`, DeletePrayerRoute);
 
   app.listen(port, () => {
     console.log(

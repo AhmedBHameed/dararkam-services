@@ -1,6 +1,8 @@
-import SettingModel, {ISettingModel} from '../database/SettingModel';
-import Joi from '@hapi/joi';
 import {injectable} from 'inversify';
+
+import Joi from '@hapi/joi';
+
+import SettingModel, {ISettingModel} from '../database/SettingModel';
 import checkValidationData, {ValidationDataResult} from './helper/checkValidationData';
 
 interface SettingDataSchema {

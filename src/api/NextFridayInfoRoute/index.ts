@@ -1,19 +1,21 @@
-import express, {Request, Response} from 'express';
+import express from 'express';
 import {Container} from 'inversify';
 import {ulid} from 'ulid';
 
+import Errors, {ErrorDictionary} from '../../config/errors';
 import {ISetting} from '../../database/SettingModel';
 import IOC from '../../loaders/inversionOfControl';
 import TYPES from '../../models/DI/types';
 import GetPrayerLocator from '../../use-cases/GetPrayerLocator';
 import GetSettingLocator from '../../use-cases/GetSettingLocator';
 import {getNextFridayDate} from '../../util/time';
+import ControllerHandler, {IApiResponse, IHttpRequestHelper} from '../ControllerHandler';
 
 const container: Container = IOC();
 
 const NextFridayInfoRoute = express.Router();
 
-const GetNextFridayInfoController = async (req: Request, res: Response) => {
+const GetNextFridayInfoController = async (_httpRequestHelper: IHttpRequestHelper): Promise<IApiResponse> => {
   const settingModel = container.get<GetSettingLocator>(TYPES.GetSetting);
   const prayerModel = container.get<GetPrayerLocator>(TYPES.GetPrayer);
 
@@ -55,10 +57,15 @@ const GetNextFridayInfoController = async (req: Request, res: Response) => {
       phoneNumber: '',
     },
   };
-  res.send(data);
+  return {
+    body: {
+      data,
+    },
+    statusCode: 200,
+  };
 };
 
-const PostNextFridayInfoController = async (req: Request, res: Response) => {
+const PostNextFridayInfoController = async (httpRequestHelper: IHttpRequestHelper): Promise<IApiResponse> => {
   const settingModel = container.get<GetSettingLocator>(TYPES.GetSetting);
   const prayerModel = container.get<GetPrayerLocator>(TYPES.GetPrayer);
 
@@ -90,13 +97,20 @@ const PostNextFridayInfoController = async (req: Request, res: Response) => {
   const setting = await settingModel.getSetting();
   const settingObject = setting?.toObject() as ISetting;
 
-  const validatedData = prayerModel.validate(req.body);
+  const validatedData = prayerModel.validate(httpRequestHelper.body);
   if (validatedData.error) {
-    res.status(422).send({
-      code: 'InvalidReceivedData',
-      error: validatedData.error.message,
-    });
-    return;
+    throw {
+      body: {
+        data: null,
+        errors: [
+          {
+            code: Errors.ValidationDataError,
+            message: validatedData.error.message,
+          },
+        ],
+      },
+      statusCode: 422,
+    };
   }
 
   const prayerObject = await prayerModel.getPrayer(validatedData);
@@ -105,11 +119,18 @@ const PostNextFridayInfoController = async (req: Request, res: Response) => {
       ...prayerObject?.toObject(),
     };
   } else {
-    res.status(422).send({
-      code: 'InvalidTokenOrEntryNotFound',
-      error: 'Invalid token or entry not found!',
-    });
-    return;
+    return {
+      body: {
+        data: null,
+        errors: [
+          {
+            code: Errors.InvalidTokenOrEntryNotFound,
+            message: ErrorDictionary.InvalidTokenOrEntryNotFound.message,
+          },
+        ],
+      },
+      statusCode: ErrorDictionary.InvalidTokenOrEntryNotFound.statusCode,
+    };
   }
 
   const data = {
@@ -126,9 +147,15 @@ const PostNextFridayInfoController = async (req: Request, res: Response) => {
     },
     prayer,
   };
-  res.send(data);
+
+  return {
+    body: {
+      data,
+    },
+    statusCode: 200,
+  };
 };
 
-NextFridayInfoRoute.get('/friday-praying', GetNextFridayInfoController);
-NextFridayInfoRoute.post('/friday-praying', PostNextFridayInfoController);
+NextFridayInfoRoute.get('/friday-praying', ControllerHandler(GetNextFridayInfoController));
+NextFridayInfoRoute.post('/friday-praying', ControllerHandler(PostNextFridayInfoController));
 export default NextFridayInfoRoute;

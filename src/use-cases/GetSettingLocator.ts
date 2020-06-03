@@ -1,5 +1,6 @@
-import SettingModel, {ISettingModel} from '../database/SettingModel';
 import {injectable} from 'inversify';
+
+import SettingModel, {ISettingModel} from '../database/SettingModel';
 
 interface SettingDataSchema {
   id?: any;

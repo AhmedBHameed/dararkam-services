@@ -7,10 +7,39 @@ COVID situation controlling of Friday praying by check in/out and check for spac
 - First install `docker & docker-composer`.
 - Run `sudo docker-compose -f docker-compose.yml up` to install docker image and all dependencies.
 - Use `sudo docker-compose down` to shutdown the system.
+- Run `./show-containers-ips.sh` to see what is `nginx` container ip.
+- Nginx will listen to the port `9000`.
 
 All services required to be run under container in order to bind with other services and database.
 
 # Documentation
+
+> GET /api/all-prayers
+
+```json
+{
+  "data": [
+    {
+      "name": {"first": "Ahmed", "last": "HAMEED"},
+      "phone": "07702636251",
+      "token": "123",
+      "createdAt": "2020-06-01T20:56:01.211Z",
+      "updatedAt": "2020-06-01T21:19:56.015Z",
+      "reservePrayingTime": "13:30",
+      "id": "5ed56b619a02b38e6a23c5fd"
+    },
+    {
+      "name": {"first": "Ahmed", "last": "HAMEED"},
+      "reservePrayingTime": "11:30",
+      "phone": "0770",
+      "token": "01E9S32CVHB456DGM7492P9M32.01E9S32CVH0NE9TMTWKJWPNV9P.01E9S32CVJ2NC5ETVMS18EY3M4",
+      "createdAt": "2020-06-01T23:22:40.827Z",
+      "updatedAt": "2020-06-01T23:31:23.589Z",
+      "id": "5ed58dc0f2d6c4b1fbd2fcb0"
+    }
+  ]
+}
+```
 
 > GET api/friday-praying
 
@@ -18,24 +47,26 @@ All services required to be run under container in order to bind with other serv
 
 ```json
 {
-  "settings": {
-    "nextFridayData": "2020-06-05", // Calculated automatically till Friday 2 pm. After that a new date calculated.
-    "firstPraying": {
-      "time": "11:30",
-      "personSpaceLeft": 59 // This number decrement with each record on next fetch.
+  "data": {
+    "settings": {
+      "nextFridayData": "2020-06-05", // Calculated automatically till Friday 2 pm. After that a new date calculated.
+      "firstPraying": {
+        "time": "11:30",
+        "personSpaceLeft": 59 // This number decrement with each record on next fetch.
+      },
+      "secondPraying": {
+        "time": "13:30",
+        "personSpaceLeft": 59
+      }
     },
-    "secondPraying": {
-      "time": "13:30",
-      "personSpaceLeft": 59
+    "prayer": {
+      "token": "01E9S1Y0PBHN7YNJ3B2A61D314.01E9S1Y0PBYPWVPVFNBG7XEZGD.01E9S1Y0PBNGY3K69WAFF3JCYK", // unique token.
+      "name": {
+        "first": "",
+        "last": ""
+      },
+      "phoneNumber": ""
     }
-  },
-  "prayer": {
-    "token": "01E9S1Y0PBHN7YNJ3B2A61D314.01E9S1Y0PBYPWVPVFNBG7XEZGD.01E9S1Y0PBNGY3K69WAFF3JCYK", // unique token.
-    "name": {
-      "first": "",
-      "last": ""
-    },
-    "phoneNumber": ""
   }
 }
 ```
@@ -54,28 +85,30 @@ All services required to be run under container in order to bind with other serv
 
 ```json
 {
-  "settings": {
-    "nextFridayData": "2020-06-05",
-    "firstPraying": {
-      "time": "11:30",
-      "personSpaceLeft": 59
+  "data": {
+    "settings": {
+      "nextFridayData": "2020-06-05",
+      "firstPraying": {
+        "time": "11:30",
+        "personSpaceLeft": 59
+      },
+      "secondPraying": {
+        "time": "13:30",
+        "personSpaceLeft": 59
+      }
     },
-    "secondPraying": {
-      "time": "13:30",
-      "personSpaceLeft": 59
+    "prayer": {
+      "name": {
+        "first": "Ahmed",
+        "last": "HAMEED"
+      },
+      "reservePrayingTime": "11:30",
+      "phone": "07702636251",
+      "token": "01E9S03J6YHSEK94HM354XV1AH.01E9S03J6Y61YMNDGGAWPNXV0Y.01E9S03J6YE45R1TVV7TMHVTHW",
+      "createdAt": "2020-06-01T22:32:53.019Z",
+      "updatedAt": "2020-06-01T22:36:09.855Z",
+      "id": "5ed58215adb9a7aa9d49f693"
     }
-  },
-  "prayer": {
-    "name": {
-      "first": "Ahmed",
-      "last": "HAMEED"
-    },
-    "reservePrayingTime": "11:30",
-    "phone": "07702636251",
-    "token": "01E9S03J6YHSEK94HM354XV1AH.01E9S03J6Y61YMNDGGAWPNXV0Y.01E9S03J6YE45R1TVV7TMHVTHW",
-    "createdAt": "2020-06-01T22:32:53.019Z",
-    "updatedAt": "2020-06-01T22:36:09.855Z",
-    "id": "5ed58215adb9a7aa9d49f693"
   }
 }
 ```
@@ -84,8 +117,13 @@ All services required to be run under container in order to bind with other serv
 
 ```json
 {
-  "code": "InvalidReceivedData",
-  "error": "\"token\" is not allowed to be empty"
+  "data": null,
+  "errors": [
+    {
+      "code": "InvalidReceivedData",
+      "error": "\"token\" is not allowed to be empty"
+    }
+  ]
 }
 ```
 
@@ -107,16 +145,18 @@ All services required to be run under container in order to bind with other serv
 
 ```json
 {
-  "name": {
-    "last": "HAMEED",
-    "first": "Ahmed"
-  },
-  "reservePrayingTime": "11:30",
-  "phone": "07702636262",
-  "token": "01E9S32CVHB456DGM7492P9M32.01E9S32CVH0NE9TMTWKJWPNV9P.01E9S32CVJ2NC5ETVMS18EY3M4",
-  "createdAt": "2020-06-01T23:22:40.827Z",
-  "updatedAt": "2020-06-01T23:22:40.835Z",
-  "id": "5ed58dc0f2d6c4b1fbd2fcb0"
+  "data": {
+    "name": {
+      "last": "HAMEED",
+      "first": "Ahmed"
+    },
+    "reservePrayingTime": "11:30",
+    "phone": "07702636262",
+    "token": "01E9S32CVHB456DGM7492P9M32.01E9S32CVH0NE9TMTWKJWPNV9P.01E9S32CVJ2NC5ETVMS18EY3M4",
+    "createdAt": "2020-06-01T23:22:40.827Z",
+    "updatedAt": "2020-06-01T23:22:40.835Z",
+    "id": "5ed58dc0f2d6c4b1fbd2fcb0"
+  }
 }
 ```
 
@@ -138,18 +178,44 @@ All services required to be run under container in order to bind with other serv
 
 ```json
 {
-  "name": {
-    "first": "Wasim",
-    "last": "Almadfaa"
-  },
-  "reservePrayingTime": "11:30",
-  "phone": "123456789",
-  "createdAt": "2020-06-01T23:37:43.036Z",
-  "updatedAt": "2020-06-01T23:38:39.994Z",
-  "id": "5ed59147572dd2b6c39f690f"
+  "data": {
+    "name": {
+      "first": "Wasim",
+      "last": "Almadfaa"
+    },
+    "reservePrayingTime": "11:30",
+    "phone": "123456789",
+    "createdAt": "2020-06-01T23:37:43.036Z",
+    "updatedAt": "2020-06-01T23:38:39.994Z",
+    "id": "5ed59147572dd2b6c39f690f"
+  }
 }
 ```
 
-> DELETE api/delete-prayer
+> DELETE api/delete-prayer/:token => Example api/delete-prayer/01E9S03J6YHSEK94HM354XV1AH.01E9S03J6Y61YMNDGGAWPNXV0Y.01E9S03J6YE45R1TVV7TMHVTHW
 
-**IMPLEMENT SOON**
+**Return**
+
+```json
+{
+  "data": {
+    "message": "Record has been deleted successfully."
+  }
+}
+```
+
+if double click on the same id then error will triggered
+
+**Error**
+
+```json
+{
+  "data": null,
+  "errors": [
+    {
+      "code": "InvalidDeleteTokenOrNotFound",
+      "message": "Invalid delete token or not found record!"
+    }
+  ]
+}
+```
