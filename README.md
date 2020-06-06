@@ -170,7 +170,7 @@ All services required to be run under container in order to bind with other serv
   "lastName": "Almadfaa",
   "phone": "123456789",
   "token": "01E9S3YJD4MAFGK1D4RVD5ZNR0.01E9S3YJD49TQ8208HENJYDKCK.01E9S3YJD5KCNK6TMG71QN53RZ",
-  "reservePrayingTime": "11:30"
+  "reservePrayingTime": "11:30" // or '' in case of inactive prayer. Taking enum type of ['', '11:30', '13:30']
 }
 ```
 
@@ -183,7 +183,7 @@ All services required to be run under container in order to bind with other serv
       "first": "Wasim",
       "last": "Almadfaa"
     },
-    "reservePrayingTime": "11:30",
+    "reservePrayingTime": "11:30", // or '' in case of inactive prayer
     "phone": "123456789",
     "createdAt": "2020-06-01T23:37:43.036Z",
     "updatedAt": "2020-06-01T23:38:39.994Z",

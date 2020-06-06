@@ -19,7 +19,7 @@ const createPrayerValidationSchema = Joi.object<CreatePrayerDataSchema>({
   phone: Joi.string().required(),
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
-  reservePrayingTime: Joi.string().required(),
+  reservePrayingTime: Joi.string().valid('11:30', '13:30').required(),
   token: Joi.string().required(),
 });
 
