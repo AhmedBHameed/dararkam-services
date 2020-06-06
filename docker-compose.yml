@@ -2,7 +2,7 @@ version: '3.4'
 
 networks:
   skynet:
-    # driver: bridge
+    driver: bridge
     # ipam:
     #   driver: default
     #   config:
@@ -57,7 +57,7 @@ services:
       - skynet
     ports:
       - 0.0.0.0:9000:80
-      - 443:443
+      - 0.0.0.0:443:443
     depends_on:
       - arkam_service
     volumes:
