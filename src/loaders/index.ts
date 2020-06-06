@@ -63,7 +63,7 @@ export default async (): Promise<void> => {
   app.use(`${root}/api`, UpdatePrayerRoute);
   app.use(`${root}/api`, DeletePrayerRoute);
 
-  app.listen(port, () => {
+  app.listen(port, '0.0.0.0', () => {
     console.log(
       `\n\t#################################################################################\n\t🛡️  Application server listening on port: http://[${showIp()}]:${port} 🛡️\n\t#################################################################################\n`
     );
