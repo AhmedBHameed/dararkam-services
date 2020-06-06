@@ -22,7 +22,7 @@ const PrayerSchema = new Schema(
     name: {type: {first: String, last: String}, default: {first: '', last: ''}},
     email: {type: String},
     phone: {type: String, required: true},
-    reservePrayingTime: {type: String, required: true},
+    reservePrayingTime: {type: String},
     token: {type: String, required: true},
   },
   {timestamps: true}

@@ -15,7 +15,7 @@ const UpdatePrayerController = async (httpRequestHelper: IHttpRequestHelper): Pr
   const updatePryerModel = container.get<UpdatePrayerLocator>(TYPES.UpdatePryer);
 
   const validatedData = updatePryerModel.validate(httpRequestHelper.body);
-
+  console.log('updatedPryer', validatedData);
   if (validatedData.error) {
     throw {
       body: {

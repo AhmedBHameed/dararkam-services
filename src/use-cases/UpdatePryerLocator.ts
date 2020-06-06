@@ -21,7 +21,7 @@ const updatePrayerValidationSchema = Joi.object<updatePrayerDataSchema>({
   phone: Joi.string().required(),
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
-  reservePrayingTime: Joi.string().valid('11:30', '13:30').required(),
+  reservePrayingTime: Joi.string().allow('').valid('', '11:30', '13:30').required(),
   token: Joi.string().optional(),
 });
 
