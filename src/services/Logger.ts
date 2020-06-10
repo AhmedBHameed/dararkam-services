@@ -17,7 +17,7 @@ const transports: Transport[] = [
   }),
 ];
 
-if (environment.nodeEnv !== 'development') {
+if (environment.buildEnv !== 'dev') {
   transports.push(new winston.transports.Console());
 } else {
   transports.push(

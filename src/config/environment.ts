@@ -13,6 +13,6 @@ export default {
     dir: get(process.env, 'LOG_DIR', 'logs'),
     level: get(process.env, 'LOG_LEVEL', 'silly'),
   },
-  nodeEnv: get(process.env, 'NODE_ENV'),
+  buildEnv: get(process.env, 'BUILD_ENV', 'dev'),
   port: parseInt(process.env.PORT || '9009'),
 };

@@ -57,7 +57,7 @@ services:
       - skynet
     ports:
       - 0.0.0.0:9000:80
-      - 0.0.0.0:443:443
+      - 443:443
     depends_on:
       - arkam_service
     volumes:

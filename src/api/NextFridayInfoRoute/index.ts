@@ -119,7 +119,7 @@ const PostNextFridayInfoController = async (httpRequestHelper: IHttpRequestHelpe
       ...prayerObject?.toObject(),
     };
   } else {
-    return {
+    throw {
       body: {
         data: null,
         errors: [

@@ -6,6 +6,7 @@ import express from 'express';
 import mongoSanitize from 'express-mongo-sanitize';
 import helmet from 'helmet';
 import {Container} from 'inversify';
+import path from 'path';
 // eslint-disable-next-line
 import sanitizer from 'sanitizer';
 
@@ -18,6 +19,7 @@ import environment from '../config/environment';
 import TYPES from '../models/DI/types';
 import {Logger} from '../services/Logger';
 import MongoConnectionLocator from '../services/MongoConnectionLocator';
+import {allowOriginAccess} from '../util/allow-origin-access';
 import showIp from '../util/showIp';
 import {xssProtection} from '../util/xssProtection';
 import IOC from './inversionOfControl';
@@ -51,19 +53,24 @@ export default async (): Promise<void> => {
 
   const app = express();
 
+  app.use(allowOriginAccess());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(helmet());
   app.use(xssProtection(sanitizer));
   app.use(mongoSanitize());
 
+  app.use(
+    '/prayers-list/01EAG4SCJSN7HXE500X0W0YEKK01EAG4SCJSXH9KTAGRTDEXF06E',
+    express.static(path.join('public/house-arkam/build'))
+  );
   app.use(`${root}/api`, ListAllPrayersRoute);
   app.use(`${root}/api`, NextFridayInfoRoute);
   app.use(`${root}/api`, CreatePrayerRoute);
   app.use(`${root}/api`, UpdatePrayerRoute);
   app.use(`${root}/api`, DeletePrayerRoute);
 
-  app.listen(port, '0.0.0.0', () => {
+  app.listen(port, () => {
     console.log(
       `\n\t#################################################################################\n\t🛡️  Application server listening on port: http://[${showIp()}]:${port} 🛡️\n\t#################################################################################\n`
     );

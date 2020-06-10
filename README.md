@@ -51,11 +51,11 @@ All services required to be run under container in order to bind with other serv
     "settings": {
       "nextFridayData": "2020-06-05", // Calculated automatically till Friday 2 pm. After that a new date calculated.
       "firstPraying": {
-        "time": "11:30",
+        "time": "11:30", // HH:mm
         "personSpaceLeft": 59 // This number decrement with each record on next fetch.
       },
       "secondPraying": {
-        "time": "13:30",
+        "time": "13:30", // HH:mm
         "personSpaceLeft": 59
       }
     },
@@ -72,6 +72,7 @@ All services required to be run under container in order to bind with other serv
 ```
 
 > POST api/friday-praying
+> This end-point used when the user wants to check how many places left. Note that the user must already exists in the database to get information.
 
 **Payload:**
 
@@ -89,11 +90,11 @@ All services required to be run under container in order to bind with other serv
     "settings": {
       "nextFridayData": "2020-06-05",
       "firstPraying": {
-        "time": "11:30",
+        "time": "11:30", // HH:mm
         "personSpaceLeft": 59
       },
       "secondPraying": {
-        "time": "13:30",
+        "time": "13:30", // HH:mm
         "personSpaceLeft": 59
       }
     },

@@ -16,7 +16,7 @@ export const ErrorDictionary = {
     statusCode: 422,
   },
   InvalidTokenOrEntryNotFound: {
-    message: 'Invalid token or entry not found!',
+    message: 'Invalid token or entry not found! Token might be new and not registered.',
     statusCode: 422,
   },
 };

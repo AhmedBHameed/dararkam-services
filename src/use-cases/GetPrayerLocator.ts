@@ -60,6 +60,20 @@ class GetPrayerLocator {
       return error;
     }
   }
+
+  public async getCurrentWeekPrayers(previousFriday: Moment, nextAfter: Moment): Promise<IPrayerModel[] | Error> {
+    try {
+      const prayers = await PrayerModel.find({
+        updatedAt: {$gte: previousFriday.toDate(), $lt: nextAfter.toDate()},
+      })
+        .where('reservePrayingTime')
+        .ne('')
+        .exec();
+      return prayers;
+    } catch (error) {
+      return new Error(error);
+    }
+  }
 }
 
 export default GetPrayerLocator;
