@@ -37,7 +37,7 @@ jobs:
           source: ${{ secrets.SOURCE }}
           target: ${{ secrets.TARGET }}
           script: |
-            pwd
+            cd www/dararkam-services
             ls -al
         env:
           CI: true
