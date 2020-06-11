@@ -20,18 +20,7 @@ const config = env => {
    * Inject environment variables if webpack bundler get DOCKER_ENV from container.
    * If not then fallback to local environment in .dev.env
    */
-
-  let environments;
-  console.log('process.env.PROD_ENV', process.env);
-  if (process.env.PROD_ENV) {
-    environments = JSON.parse(process.env.PROD_ENV);
-  } else {
-    try {
-      environments = !!process.env.DOCKER_ENV ? '' : dotenv.parse(readFileSync(`${ROOT_DIR}/.${env}.env`));
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const environments = !!process.env.DOCKER_ENV ? '' : dotenv.parse(readFileSync(`${ROOT_DIR}/.${env}.env`));
 
   return {
     entry: `${APP_DIR}/app.ts`,
