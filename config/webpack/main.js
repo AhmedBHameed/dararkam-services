@@ -22,7 +22,7 @@ const config = env => {
    */
 
   let environments;
-  console.log('process.env.PROD_ENV', process.env.PROD_ENV, JSON.parse(process.env.PROD_ENV));
+  console.log('process.env.PROD_ENV', process.env.PROD_ENV);
   if (process.env.PROD_ENV) {
     environments = JSON.parse(process.env.PROD_ENV);
   } else {
