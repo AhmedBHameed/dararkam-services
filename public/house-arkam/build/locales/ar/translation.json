@@ -1,0 +1,111 @@
+{
+  "menu": {
+    "kakiee": "KAKIEE",
+    "blog": "BLOG (soon)",
+    "dashboard": "DASHBOARD",
+    "about": "ABOUT",
+    "hireMe": "HIRE ME",
+    "contactMe": "CONTACT ME",
+    "logout": "LOG OUT",
+    "login": "LOG IN"
+  },
+  "dashbaord": {
+    "asideMenu": {
+      "main": "DASHBOARD",
+      "articals": "ARTICALS",
+      "newArtical": "NEW ARTICAL"
+    }
+  },
+  "about": {
+    "myname": "Hi, my name is",
+    "ahmedhameed": "Ahmed HAMEED",
+    "founder": "Founder of kakiee.at",
+    "aboutKakiee": "ABOUT KAKIEE",
+    "introduction": "KAKIEE is a simple personal portfolio with technical blog section for sharing knowledge and codes. As an digital entrepreneur with experience, It is a pleasure to share what i've learned. Blogs can help other and show them how to do things in best practice. The name comes from \"kaki fruit\" which I love so much.",
+    "whatIDo": "WHAT I DO",
+    "services": {
+      "1": {
+        "title": "IMPLEMENTATION",
+        "caption": "Converting your design into a web page. Coding is our duty by using the most modern technologies."
+      },
+      "2": {
+        "title": "PLANNING",
+        "caption": "Any projects needs a good planning before start coding and by using my experience, you can achieve your project to become reality."
+      },
+      "3": {
+        "title": "OPTIMIZATION",
+        "caption": "Optimization needs a deep understanding of how to do. Using my experience we can lead you into a faster and more reliable performance."
+      },
+      "4": {
+        "title": "CONSULTING AND TRAINING",
+        "caption": "With more than 5 years of experience, consulting and training is one of my services focusing on web technologies."
+      }
+    },
+    "contactMe": "CONTACT ME",
+    "contactSubtitle": "Any type of engagement is required so DO NOT hesitate to contact me. Even we can drink a cup of caffee together."
+  },
+  "hireMe": {
+    "headerSection": {
+      "title": "Full-Stack developer is your way to go."
+    },
+    "offers": {
+      "title": "What do I offer as a service ?",
+      "services": {
+        "1": {
+          "title": "Back-End",
+          "subtitle": "Building a scalable back-end application to service multiple clients by using most modern technologies like Node.js and database like SQL / NoSQL with the best concepts like JWT / RESTfull API / GraphQL / Micro services."
+        },
+        "2": {
+          "title": "Front-End",
+          "subtitle": "Coding UX/UI is our responsibilities. Client experience comes first when developing interfaces and services. Clean, reusable and optimized code is our focus. By using the most modern framework like React.js / Angular.js / Vue.js."
+        },
+        "3": {
+          "title": "Dev-Ops",
+          "subtitle": "We help you hosting your web site / web application and set up projects into a containers to serve as a service by using Linux / Nginx / Docker / Docker-compose. that will give you more flexibility for a feature modification and scalability."
+        }
+      }
+    },
+    "whyHiringMe": {
+      "title": "Why hiring me ?",
+      "quote": "IT DOESN'T MAKE SENSE TO HIRE SMART PEOPLE AND TELL THEM WHAT TO DO; WE HIRE SMART PEOPLE SO THEY CAN TELL US WHAT TO DO.",
+      "sayer": "- Steve Jobs"
+    },
+    "hireMeBtn": "HIRE ME"
+  },
+  "contactMe": {
+    "contactInfo": {
+      "address": "Wiedner Hauptstraße 141-143, Austria, Vienna.",
+      "mobile": "+43 677-6276-8620",
+      "email": "contact.kakiee@gmail.com"
+    },
+    "contactForm": {
+      "subject": "Subject",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "send": "Send"
+    }
+  },
+  "validators": {
+    "allRequired": "All field is required!",
+    "required": "This field is required!",
+    "invalidEmail": "Invalid email address!"
+  },
+  "blogCard": {
+    "share": "SHARE",
+    "readMore": "READ MORE"
+  },
+  "footer": {
+    "line1": "© 2020 kakiee.at, All Rights Reserved.",
+    "line2": {
+      "made": "Made with",
+      "by": "by",
+      "owner": "Ahmed Hameed"
+    },
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/in/ahmed-hameed-185b3612b/",
+      "github": "https://github.com/AhmedBHameed",
+      "email": "mailto:contact.kakiee@gmail.com"
+    }
+  }
+}
