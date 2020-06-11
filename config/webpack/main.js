@@ -22,11 +22,15 @@ const config = env => {
    */
 
   let environments;
-  console.log('process.env.PROD_ENV', process.env.PROD_ENV);
+  console.log('process.env.PROD_ENV', process.env);
   if (process.env.PROD_ENV) {
     environments = JSON.parse(process.env.PROD_ENV);
   } else {
-    environments = !!process.env.DOCKER_ENV ? '' : dotenv.parse(readFileSync(`${ROOT_DIR}/.${env}.env`));
+    try {
+      environments = !!process.env.DOCKER_ENV ? '' : dotenv.parse(readFileSync(`${ROOT_DIR}/.${env}.env`));
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return {
