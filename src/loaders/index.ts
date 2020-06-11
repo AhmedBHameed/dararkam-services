@@ -34,6 +34,7 @@ import IOC from './inversionOfControl';
  */
 export default async (): Promise<void> => {
   const {port, root} = environment;
+  console.log('environment', environment);
   const container: Container = IOC();
 
   const log = container.get<Logger>(TYPES.Logger);
