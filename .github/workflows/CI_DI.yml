@@ -23,6 +23,10 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version: ${{ matrix.node-version }}
+
+      - run: pwd
+      - run: ls -al
+      - run: cd ../
       - run: yarn
       - run: yarn build
       # - run: yarn test
